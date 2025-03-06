@@ -9,18 +9,22 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.forEach((input, index) => {
         input.addEventListener("input", (e) => {
             if (e.inputType === "insertText" && e.target.value.length === 1) {
-                if (index < inputs.length - 1) {
-                    inputs[index + 1].focus(); // Move focus to the next input
-                }
+                setTimeout(() => { // Add a slight delay for Cypress
+                    if (index < inputs.length - 1) {
+                        inputs[index + 1].focus(); // Move focus to the next input
+                    }
+                }, 50);
             }
         });
 
         input.addEventListener("keydown", (e) => {
             if (e.key === "Backspace") {
                 if (input.value === "") {
-                    if (index > 0) {
-                        inputs[index - 1].focus(); // Move focus to the previous input
-                    }
+                    setTimeout(() => { // Add delay for Cypress
+                        if (index > 0) {
+                            inputs[index - 1].focus(); // Move focus to the previous input
+                        }
+                    }, 50);
                 } else {
                     input.value = ""; // Clear the current input
                 }
