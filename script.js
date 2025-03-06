@@ -1,34 +1,37 @@
 document.addEventListener("DOMContentLoaded", () => {
     const inputs = document.querySelectorAll(".code");
 
-    // Automatically focus the first input field when the page loads
-    if (inputs.length > 0) {
-        inputs[0].focus();
-    }
+    // Auto-focus the first input on page load
+    inputs[0].focus();
 
     inputs.forEach((input, index) => {
         input.addEventListener("input", (e) => {
-            if (e.inputType === "insertText" && e.target.value.length === 1) {
-                setTimeout(() => { // Add a slight delay for Cypress
-                    if (index < inputs.length - 1) {
-                        inputs[index + 1].focus(); // Move focus to the next input
-                    }
-                }, 50);
+            let value = e.target.value;
+
+            // Move to next field if a number is entered
+            if (value.length === 1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
             }
         });
 
         input.addEventListener("keydown", (e) => {
             if (e.key === "Backspace") {
                 if (input.value === "") {
-                    setTimeout(() => { // Add delay for Cypress
-                        if (index > 0) {
-                            inputs[index - 1].focus(); // Move focus to the previous input
-                        }
-                    }, 50);
+                    // Move focus back when deleting
+                    if (index > 0) {
+                        inputs[index - 1].focus();
+                    }
                 } else {
-                    input.value = ""; // Clear the current input
+                    input.value = ""; // Clear current field on backspace
                 }
-                e.preventDefault(); // Prevent default Backspace behavior
+                e.preventDefault(); // Prevent default backspace behavior
+            }
+        });
+
+        // Ensure only numbers are allowed
+        input.addEventListener("keypress", (e) => {
+            if (!/^\d$/.test(e.key)) {
+                e.preventDefault();
             }
         });
     });
