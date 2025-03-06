@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
     const inputs = document.querySelectorAll(".code");
 
+    // Automatically focus the first input field when the page loads
+    if (inputs.length > 0) {
+        inputs[0].focus();
+    }
+
     inputs.forEach((input, index) => {
         input.addEventListener("input", (e) => {
             if (e.inputType === "insertText" && e.target.value.length === 1) {
